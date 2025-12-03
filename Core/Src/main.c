@@ -127,30 +127,20 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	// 1. Lecture des valeurs brutes (0 à 4095)
-	uint32_t raw_LDR = Read_ADC_Channel(ADC_CHANNEL_0);   // PA0
-	uint32_t raw_Hum = Read_ADC_Channel(ADC_CHANNEL_1);   // PA1
-	uint32_t raw_Temp = Read_ADC_Channel(ADC_CHANNEL_4);  // PA4
-	uint32_t raw_Press = Read_ADC_Channel(ADC_CHANNEL_10); // PC0
+  // 1. Lecture des valeurs brutes
+	uint32_t raw_LDR = Read_ADC_Channel(ADC_CHANNEL_0);
+	uint32_t raw_Hum = Read_ADC_Channel(ADC_CHANNEL_1);
+	uint32_t raw_Temp = Read_ADC_Channel(ADC_CHANNEL_4);
+	uint32_t raw_Press = Read_ADC_Channel(ADC_CHANNEL_10);
 
-	// 2. Conversion en tension (V) - Optionnel mais utile
-	// V = (Valeur * 3.3V) / 4095
-	float volt_LDR = (raw_LDR * 3.3) / 4095.0;
-	float volt_Temp = (raw_Temp * 3.3) / 4095.0;
+	// --- FORMAT CSV ---
+	// LDR,HUMIDITE,TEMPERATURE,PRESSION
+	// On envoie les 4 valeurs brutes sur une seule ligne.
+	printf("%lu,%lu,%lu,%lu\n", raw_LDR, raw_Hum, raw_Temp, raw_Press);
 
-	// 3. Affichage dans le terminal
-	// \r\n permet le retour à la ligne
-	printf("--- Lectures Capteurs ---\r\n");
-	printf("LDR (Lumiere) : %lu (%.2f V)\r\n", raw_LDR, volt_LDR);
-	printf("OPENME110 (Hum) : %lu\r\n", raw_Hum);
-	printf("Diode (Temp)  : %lu (%.2f V)\r\n", raw_Temp, volt_Temp);
-	printf("MPX2200 (Pres): %lu\r\n", raw_Press);
-	printf("\r\n"); // Ligne vide
+	HAL_Delay(1000); // Mise à jour toutes les secondes
 
-	// 4. Pause de 1 seconde
-	HAL_Delay(1000);
-
-    /* USER CODE END WHILE */
+/* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
   }
